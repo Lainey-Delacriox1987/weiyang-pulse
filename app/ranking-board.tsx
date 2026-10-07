@@ -1,0 +1,16 @@
+"use client";
+import {useLayoutEffect,useRef,useState} from "react";
+import type {Team} from "@/lib/use-market";
+import {sampleIds} from "./event-ui";
+const tabs=["人气","声浪","评委","总榜"] as const;
+export default function RankingBoard({teams,counts,demo=false}:{teams:Team[];counts:Record<string,number>;demo?:boolean}){
+ const [tab,setTab]=useState(0);const rows=useRef<HTMLDivElement|null>(null);const previous=useRef(new Map<string,number>());
+ const ranked=teams.map(t=>({...t,votes:counts[t.id]||0})).sort((a,b)=>b.votes-a.votes||a.createdAt-b.createdAt||a.id.localeCompare(b.id));
+ const key=ranked.map(t=>`${t.id}:${t.votes}`).join("|");const total=ranked.reduce((n,t)=>n+t.votes,0);
+ useLayoutEffect(()=>{const next=new Map<string,number>();rows.current?.querySelectorAll<HTMLElement>("[data-team]").forEach(node=>{const id=node.dataset.team!;const top=node.getBoundingClientRect().top;next.set(id,top);const old=previous.current.get(id);if(old!==undefined&&old!==top&&!matchMedia("(prefers-reduced-motion: reduce)").matches)node.animate([{transform:`translateY(${old-top}px)`},{transform:"translateY(0)"}],{duration:320,easing:"ease-out"});});previous.current=next;},[key,tab]);
+ const place=(index:number)=>ranked.findIndex(t=>t.votes===ranked[index].votes)+1;
+ const leaders=ranked.filter(t=>t.votes>0).slice(0,3);
+ return <div className="ranking-board"><small>{demo?"LOCAL DEMO / 本地演示":"LIVE / 现场榜单"}</small><h2>每一种支持，都有回响。</h2><div className="ranking-tabs" role="tablist" aria-label="榜单类型">{tabs.map((label,i)=><button key={label} id={`rank-tab-${label}`} role="tab" aria-selected={tab===i} aria-controls={`rank-panel-${label}`} tabIndex={tab===i?0:-1} onClick={()=>setTab(i)} onKeyDown={e=>{if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();const next=(i+(e.key==="ArrowRight"?1:3))%4;setTab(next);e.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("button")[next]?.focus();}}}>{label}</button>)}</div><section role="tabpanel" id={`rank-panel-${tabs[tab]}`} aria-labelledby={`rank-tab-${tabs[tab]}`} tabIndex={0}>
+ {tab===0?<><p>{demo?"仅当前浏览器的示例票数，不计入正式结果。":"服务器确认的真实票数；同票并列，展示顺序不代表额外分数。"}</p>{leaders.length>0&&<div className="rank-podium">{leaders.map((t,i)=><div key={t.id} className={`podium-place podium-${i}`}><small>{place(i)===1?"领先":`并列 / 第 ${place(i)} 名`}</small><strong>{t.code}</strong><span>{t.name}{sampleIds.has(t.id)&&" · 示例"}</span><b>{t.votes}<small> 票</small></b></div>)}</div>}<div ref={rows}>{ranked.map((t,i)=><div className="ranking-row" data-team={t.id} key={t.id}><span className="ranking-number">{t.votes?String(place(i)).padStart(2,"0"):"—"}</span><span>{t.name}{sampleIds.has(t.id)&&<small>示例作品</small>}</span><b>{t.votes}<small> 票</small></b></div>)}</div>{!total&&<p className="muted">第一份支持还在路上，暂不分配名次。</p>}</>:tab===1?<div className="rank-pending"><strong>把现场的回应，变成声浪。</strong><p>30 秒本地互动，可选麦克风。数值是娱乐测量，未经分贝校准；不用于跨设备公平评审，不计入官方总分。声音不上传、不保存。</p><a className="event-button" href="/play">开启本地声浪体验 ↗</a></div>:tab===2?<div className="rank-pending"><strong>评委分数 · 待录入</strong><p>尚无经组织者确认的评分数据。正式评分规则与受保护的录入流程配置后，才能展示评委榜。</p></div>:<div className="rank-pending"><strong>总榜 · 规则待配置</strong><p>人气、声浪与评委分数的权重尚未确认。目前不生成官方总分，也不把娱乐声浪与真实票数直接相加。</p></div>}
+ </section><a href="/screen" className="event-link">打开现场大屏 ↗</a></div>;
+}
