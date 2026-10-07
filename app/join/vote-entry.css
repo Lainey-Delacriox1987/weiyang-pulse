@@ -1,0 +1,1 @@
+.vote-entry{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 15px;border-radius:8px;background:linear-gradient(90deg,#fa86c4,#ffc271);color:#271b26!important;font-size:13px;font-weight:900;box-shadow:0 0 20px #ff85c43b}.vote-entry svg:last-child{transform:rotate(145deg)}.vote-entry:hover{filter:brightness(1.1)}
