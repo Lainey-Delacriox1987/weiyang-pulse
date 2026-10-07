@@ -1,0 +1,17 @@
+"use client";
+import {useEffect,useRef,useState} from "react";
+import QRCode from "qrcode";
+import {useMarket} from "@/lib/use-market";
+import {EventHeader,SampleNotice} from "../event-ui";
+import RankingBoard from "../ranking-board";
+import VoteBurst,{type VoteBurstData} from "../vote/vote-burst";
+import "../vote/vote.css";
+import "../event-design.css";
+import "../event-festival.css";
+const titles:Record<string,string>={cheer:"收到喝彩",icebreak:"完成破冰",help:"发出求助",claim:"接力支援",resolve:"解决了问题",milestone:"发布了进展",vote:"收到一份支持"};
+export default function ScreenClient(){const {market,error}=useMarket();const[qr,setQr]=useState("");const[clock,setClock]=useState("");const[burst,setBurst]=useState<VoteBurstData|null>(null);const seen=useRef<Set<string>|null>(null);
+ useEffect(()=>{QRCode.toDataURL(location.origin+"/join",{width:200,margin:2,color:{dark:"#090b16",light:"#ffffff"}}).then(setQr);const tick=()=>setClock(new Date().toLocaleTimeString("zh-CN",{hour12:false}));tick();const timer=setInterval(tick,1000);return()=>clearInterval(timer);},[]);
+ const events=(market?.events||[]).filter(e=>!e.demo&&e.status!=="hidden");const helps=events.filter(e=>e.kind==="help"&&(e.status==="open"||e.status==="claimed"));const ranked=(market?.teams||[]).map(t=>({...t,votes:market?.voteCounts?.[t.id]||0})).sort((a,b)=>b.votes-a.votes);
+ useEffect(()=>{if(!market)return;const current=market.events.filter(e=>e.kind==="vote"&&!e.demo&&e.status==="open");if(!seen.current){seen.current=new Set(current.map(e=>e.id));return;}const newest=current.find(e=>!seen.current?.has(e.id));current.forEach(e=>seen.current?.add(e.id));if(newest)setBurst({id:newest.id,team:market.teams.find(t=>t.id===newest.teamId)?.name||"一支队伍",demo:false});},[market]);
+ return <main className="event-page festival-page live-screen"><EventHeader active="大屏"/><SampleNotice teams={market?.teams||[]}/><div className="screen-bar"><span><i/>{error?"连接恢复中":"LIVE / 现场共振"}</span><b>{clock}</b><button onClick={()=>document.documentElement.requestFullscreen?.()}>全屏展示 ↗</button></div><div className="screen-stage"><section><div className="event-eyebrow">BUILD TOGETHER. SHINE TOGETHER.</div><h1>今晚的每一步，<br/><span>全场都看见。</span></h1><div className="screen-mini-stats"><span><b>{ranked.length}</b> 支队伍 / 含示例</span><span><b>{market?.totalVotes||0}</b> 份真实支持</span><span><b>{helps.length}</b> 个支援信号</span></div></section><aside className="scan-card">{qr&&<img src={qr} alt="扫码加入现场互动"/>}<small>SCAN TO JOIN</small><h2>你也来点亮现场。</h2><p>破冰 / 求助 / 进展 / 投票</p></aside></div><div className="screen-bottom-grid"><section className="screen-panel"><small>LIVE / 最新回声</small><h2>现场正在发生</h2>{events.slice(0,5).map(e=><div className="live-event" key={e.id}><time>{new Date(e.createdAt).toLocaleTimeString("zh-CN",{hour:"2-digit",minute:"2-digit"})}</time><div><strong>{market?.teams.find(t=>t.id===e.teamId)?.name||"现场伙伴"} · {titles[e.kind]||"更新了动态"}</strong><p>{e.note||e.label}</p></div></div>)}{!events.length&&<p className="muted">扫码参与，让第一条回声从你开始。</p>}</section><section className="screen-panel"><small>HELP / 谁需要搭把手</small><h2>正在等待接力</h2>{helps.slice(0,3).map(e=><div className="live-help" key={e.id}><small>{market?.teams.find(t=>t.id===e.teamId)?.name} · {e.status==="claimed"?"已有人支援":"等待搭子"}</small><strong>{e.note}</strong></div>)}{!helps.length&&<p className="muted">暂时没有待解决的求助。你可以在手机端分享进展。</p>}</section><section className="screen-panel"><RankingBoard teams={market?.teams||[]} counts={market?.voteCounts||{}}/></section></div><VoteBurst burst={burst}/></main>;
+}
