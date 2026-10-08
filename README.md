@@ -9,8 +9,8 @@
 - 在线体验：https://pulse-exchange-hackathon.lucyke915.chatgpt.site
 - GitHub：https://github.com/Lainey-Delacriox1987/weiyang-pulse
 - 完整源码：`weiyang-pulse-v14-source.zip`；`source-manifest-v14.json` 逐项列出文件大小与 SHA-256。业务代码、迁移和配置来自上述提交；README 与方案说明为发布后的交付文档修订。
-- GitHub 以仓库最新提交为准；本地材料不作为远端同步成功的证明。
-- 一页 PDF 与源码 ZIP 对应 v14。演示视频以视频标注的实际版本为准；旧 v11 视频保留为历史演示，不能代表自助登记版。
+- 仓库展开目录仍是历史版本，尚未完整同步 v14；请下载 `weiyang-pulse-v14-source.zip` 获取完整、可核验的当前源码，不要直接使用仓库展开目录构建。清单校验对象是该 ZIP 内文件；本仓库根 README 在归档后补充了交付状态与视频链接。
+- 一页 PDF 与源码 ZIP 对应 v14。最新演示为 [WeYoung-Pulse-v14-Real-Demo.mp4](./WeYoung-Pulse-v14-Real-Demo.mp4)，88 秒真实桌面录屏，无音轨，展示登记填写（未提交）及明确区分的正式票数/本机演示票。旧 v11 视频仅保留作历史记录。
 
 网站发布、材料更新、邮件发送和表单提交是不同步骤，各自以对应结果为准。
 
