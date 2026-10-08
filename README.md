@@ -4,16 +4,16 @@
 
 ## 当前版本与材料
 
-完整可运行项目源码请下载 `weiyang-pulse-v11-source.zip` 后解压；GitHub 展开的源码目录尚在同步，请勿把当前未齐的展开目录当作完整项目。
+完整可运行项目源码请下载 `weiyang-pulse-v12-source.zip` 后解压。`source-manifest-v12.json` 列出全部 169 个源码与配置文件及其 SHA-256，可用于核对解压内容或仓库展开目录是否完整。
 
-本次完整源码快照对应 `f254527f956fdedd84d3c3cf1c6360073f5fbfe5`，包含活动风格首页、投票页和参与页改版，标题样式优先级与图形箭头的小修，以及参与页的进一步美化。业务源码与必要配置来自该版本；README 补充交付说明。v11 已发布至下方原作品地址，来源提交与当前源码一致。真实界面验收结果另行记录，不把发布成功等同于全部功能通过。
+本次源码快照对应 `4ebed2c5924502be3dd72d53b09cc23a8a8d0134`。在 v11 活动风格首页、投票页和参与页改版的基础上，v12 补充窄屏布局、触控按钮与输入框适配，并修复投票庆祝花束的视口适配和图片加载时序。业务源码与必要配置来自该提交；README 补充交付说明。v12 已发布至下方原作品地址。发布成功与完整功能验收分别记录，不把局部检查当作全部功能通过。
 
 - 作品地址：https://pulse-exchange-hackathon.lucyke915.chatgpt.site
-- `source-manifest-v11.json`：v11 完整源码的文件清单与 SHA-256。
-- `weiyang-pulse-v10-source.zip`：前一版完整快照，保留用于版本对照；当前完整源码为 v11 包。
-- `weiyang-pulse-v8-source.zip`：保留的旧版 v8 源码快照，不能替代当前目录中的新版代码。
-- `WeYoung-Pulse-85s-Real-Demo.mp4`：旧版约 85 秒真实网页演示，使用示例队伍与本机演示模式，不代表新版界面。
-- `WeYoung-Pulse-OnePage-LuSiyuan.pdf`：2026-10-08 更新的一页作品说明，包含当前改版与交付边界。
+- `source-manifest-v12.json`：v12 完整源码的文件清单与 SHA-256。
+- `weiyang-pulse-v11-source.zip`、`weiyang-pulse-v10-source.zip`、`weiyang-pulse-v8-source.zip`：保留的历史源码快照；当前完整源码为 v12 包。
+- `WeYoung-Pulse-v11-Real-Demo.mp4`：约 90 秒 v11 真实桌面网页演示。视频保留真实版本标记，未录入 v12 的响应式和花束适配修复；不代表所有浏览器、网络及权限组合均已验收。
+- `WeYoung-Pulse-85s-Real-Demo.mp4`：旧版约 85 秒真实网页演示，使用示例队伍与本机演示模式，不代表当前界面。
+- `WeYoung-Pulse-OnePage-LuSiyuan.pdf`：2026-10-08 更新的一页作品说明；视频及该说明未因 v12 修复而重新制作。
 - `docs/方案说明.md`：历史方案记录；若与当前版本说明冲突，以本 README 和实际代码为准。
 
 网站可能受网络或浏览器环境影响；仓库提供源码与演示作为补充。邮件和表单是否提交，以各自回执为准。
